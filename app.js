@@ -6,26 +6,29 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
     const author = getValueByIdName("author");
     const isbn = getValueByIdName("isbn");
 
+    let dupicate = isbnChecker(isbn);
 
     if (title === "" || author === "" || isbn === "") {
         alert("Please fill the all input")
     }
     else {
-        addItems(title, author, isbn)
-        addBookStore(title, author, isbn);
-        alterBar("Add Book in List Successfully", "success");
+
+        if (dupicate.length !== 0) {
+            alterBar("Please Enter Valid ISBN Code.", "danger")
+            document.querySelector("#isbn").value = ""
+        }
+        else {
+            addItems(title, author, isbn)
+            addBookStore(title, author, isbn);
+            alterBar("Add Book in List Successfully", "success");
+
+
+            document.querySelector("#title").value = "";
+            document.querySelector("#author").value = "";
+            document.querySelector("#isbn").value = "";
+        }
     }
 })
-
-document.querySelector("#search".addEventListener("submit", (e) => {
-    
-}))
-
-
-function getValueByIdName(id) {
-    value = document.querySelector(`#${id}`).value;
-    return value
-}
 
 
 tbody.addEventListener("click", e => {
@@ -42,6 +45,31 @@ tbody.addEventListener("click", e => {
         }
     }
 })
+
+
+document.querySelector("#search").addEventListener("click", () => {
+    tbody.replaceChildren();
+    let searchValue = getValueByIdName("searchInput")
+
+    searchArray = isbnChecker(searchValue)
+
+    searchArray.forEach(item => addItems(item.title, item.author, item.isbn))
+})
+
+
+function isbnChecker(isbnCode) {
+    let searchBook = JSON.parse(localStorage.getItem("bookArray"));
+
+    searchBook = searchBook.filter((item) => item.isbn == isbnCode);
+    return searchBook;
+}
+
+
+function getValueByIdName(id) {
+    value = document.querySelector(`#${id}`).value;
+    return value
+}
+
 
 function deletefromStore(isbn) {
     let bookList = JSON.parse(localStorage.getItem("bookArray"));
@@ -75,7 +103,6 @@ function addBookStore(title, author, isbn) {
 }
 
 
-
 function addItems(title, author, isbn) {
 
     let tr = document.createElement("tr");
@@ -104,7 +131,6 @@ function addItems(title, author, isbn) {
 }
 
 
-
 function alterBar(msg, color) {
     let alterBarDiv = document.createElement("div");
     let container = document.querySelector(".container");
@@ -131,5 +157,3 @@ window.addEventListener("DOMContentLoaded", function () {
 
     book.forEach(item => addItems(item.title, item.author, item.isbn))
 })
-
-
