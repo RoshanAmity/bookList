@@ -46,7 +46,6 @@ tbody.addEventListener("click", e => {
     }
 })
 
-
 document.querySelector("#search").addEventListener("click", () => {
     tbody.replaceChildren();
     let searchValue = getValueByIdName("searchInput")
@@ -69,7 +68,6 @@ function getValueByIdName(id) {
     value = document.querySelector(`#${id}`).value;
     return value
 }
-
 
 function deletefromStore(isbn) {
     let bookList = JSON.parse(localStorage.getItem("bookArray"));
@@ -103,6 +101,7 @@ function addBookStore(title, author, isbn) {
 }
 
 
+
 function addItems(title, author, isbn) {
 
     let tr = document.createElement("tr");
@@ -131,6 +130,7 @@ function addItems(title, author, isbn) {
 }
 
 
+
 function alterBar(msg, color) {
     let alterBarDiv = document.createElement("div");
     let container = document.querySelector(".container");
@@ -157,3 +157,5 @@ window.addEventListener("DOMContentLoaded", function () {
 
     book.forEach(item => addItems(item.title, item.author, item.isbn))
 })
+
+
